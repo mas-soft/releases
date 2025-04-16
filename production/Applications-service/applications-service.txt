@@ -1,1 +1,1 @@
-Build from PR branch: dev, merged into target branch: master
+Build from PR branch: dev to master
