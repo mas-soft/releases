@@ -1,0 +1,36 @@
+name: "Weekly Copy Production to Weekly"
+
+on:
+  schedule:
+    - cron: '23 10 * * 6'  # Every Wednesday at 09:00 UTC
+  workflow_dispatch:     # Allow manual trigger
+
+jobs:
+  copy-weekly:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set Date for Weekly Folder
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Create weekly folder from production
+        run: |
+          WEEKLY_FOLDER="weekly/${{ steps.date.outputs.date }}"
+          mkdir -p "$WEEKLY_FOLDER"
+          cp -r production/* "$WEEKLY_FOLDER/"
+          echo "✅ Copied all production content into $WEEKLY_FOLDER"
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Commit and push changes
+        run: |
+          git add .
+          git commit -m "📦 Weekly copy from production to weekly/${{ steps.date.outputs.date }}"
+          git push origin main
