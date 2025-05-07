@@ -1,1 +1,1 @@
-Build from PR branch: HotFix to master
+Build from PR branch: Dev to master
