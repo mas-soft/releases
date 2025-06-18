@@ -1,1 +1,1 @@
-Build from PR branch: wasalat to master
+Build from PR branch: hotfix to master
